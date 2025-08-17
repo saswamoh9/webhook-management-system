@@ -87,6 +87,11 @@ async function loadTab(tabName) {
                 container.innerHTML = getSearchHTML();
                 await initializeSearch();
                 break;
+
+            case 'delivery-volume':
+                container.innerHTML = DeliveryVolumeModule.getHTML();
+                await DeliveryVolumeModule.initialize();
+                break;
                 
             default:
                 container.innerHTML = '<div class="card p-8"><p class="text-center text-gray-500">Tab not found</p></div>';
