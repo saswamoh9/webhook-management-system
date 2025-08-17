@@ -427,3 +427,212 @@ body {
         display: none;
     }
 }
+
+/* Sub-tab styles */
+.sub-tab-btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: white;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.sub-tab-btn:hover {
+    color: #374151;
+    border-bottom-color: #d1d5db;
+}
+
+.sub-tab-btn.active {
+    color: #7c3aed;
+    border-bottom-color: #7c3aed;
+    background: #faf5ff;
+}
+
+/* Search form improvements */
+.search-form {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+/* Results table styling */
+.results-table {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.results-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.results-table tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Stock tags */
+.stock-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: #ede9fe;
+    color: #5b21b6;
+    margin: 0.125rem;
+}
+
+/* Webhook badges */
+.webhook-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .sub-tab-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .search-form {
+        padding: 1rem;
+    }
+    
+    .results-table {
+        font-size: 0.875rem;
+    }
+    
+    .results-table th,
+    .results-table td {
+        padding: 0.75rem 0.5rem;
+    }
+}
+
+/* Loading states */
+.loading-spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #f3f4f6;
+    border-radius: 50%;
+    border-top-color: #7c3aed;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Action buttons */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.action-btn.delete:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.action-btn.view:hover {
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+/* Empty states */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
+/* Success/Error messages integration with existing system */
+.search-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-message.success {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.search-message.error {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
