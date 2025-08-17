@@ -7,7 +7,7 @@ const { firestore, COLLECTIONS } = require('../config/firestore');
 // Create webhook
 router.post('/create', async (req, res) => {
   try {
-    const { name, stockSet, tags, possibleOutput, description } = req.body; // Added description
+    const { name, stockSet, tags, possibleOutput, description } = req.body;
     const webhookId = uuidv4();
     // Force HTTPS for Cloud Run deployments
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : req.protocol;
@@ -20,7 +20,7 @@ router.post('/create', async (req, res) => {
       tags: tags || [],
       webhookUrl,
       possibleOutput: possibleOutput || '',
-      description: description || '', // Added description field
+      description: description || '',
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -127,7 +127,7 @@ router.post('/receive/:webhookId', async (req, res) => {
       id: dataId,
       webhookId,
       webhookName: webhook.name,
-      webhookDescription: webhook.description || '', // Include description
+      webhookDescription: webhook.description || '',
       stocks,
       triggerPrices,
       triggeredAt: data.triggered_at,
@@ -179,13 +179,61 @@ router.get('/possible-outputs/list', async (req, res) => {
         webhookId: doc.id,
         webhookName: data.name,
         possibleOutput: data.possibleOutput || '',
-        description: data.description || '' // Include description
+        description: data.description || ''
       });
     });
     
     res.json({ success: true, data: outputs });
   } catch (error) {
     console.error('Error getting possible outputs:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get webhook stats
+router.get('/stats', async (req, res) => {
+  try {
+    // Get total webhooks
+    const webhooksSnapshot = await firestore.collection(COLLECTIONS.WEBHOOKS).get();
+    const totalWebhooks = webhooksSnapshot.size;
+    
+    // Get total data
+    const dataSnapshot = await firestore.collection(COLLECTIONS.WEBHOOK_DATA).get();
+    const totalData = dataSnapshot.size;
+    
+    // Get today's data
+    const today = new Date().toISOString().split('T')[0];
+    const todaySnapshot = await firestore.collection(COLLECTIONS.WEBHOOK_DATA)
+      .where('date', '==', today)
+      .get();
+    const todayData = todaySnapshot.size;
+    
+    // Active templates (webhooks with data in last 7 days)
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    const weekAgoDate = weekAgo.toISOString().split('T')[0];
+    
+    const recentSnapshot = await firestore.collection(COLLECTIONS.WEBHOOK_DATA)
+      .where('date', '>=', weekAgoDate)
+      .get();
+    
+    const activeWebhooks = new Set();
+    recentSnapshot.forEach(doc => {
+      const data = doc.data();
+      activeWebhooks.add(data.webhookId);
+    });
+    
+    res.json({
+      success: true,
+      data: {
+        totalWebhooks,
+        totalData,
+        todayData,
+        activeTemplates: activeWebhooks.size
+      }
+    });
+  } catch (error) {
+    console.error('Error getting stats:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
